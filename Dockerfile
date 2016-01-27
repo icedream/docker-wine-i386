@@ -6,7 +6,7 @@ RUN apt-get update &&\
 		tar xz -C /tmp &&\
 	cd /tmp/dumb-init* &&\
 	make &&\
-	make install &&\
+	mv dumb-init /sbin/dumb-init &&\
 	apt-get autoremove --purge -y tar wget build-essential &&\
 	apt-get clean &&\
 	adduser --disabled-password --uid 9999 --home /app --gecos "" app &&\
@@ -17,7 +17,8 @@ USER app
 WORKDIR /app
 ENV WINEPREFIX /app/wine32
 ENV WINEARCH win32
-RUN dumb-init wine wineboot
+RUN /sbin/dumb-init wine wineboot
 
-ENTRYPOINT [ "wine" ]
+ENTRYPOINT [ "/sbin/dumb-init", "wine" ]
+
 
