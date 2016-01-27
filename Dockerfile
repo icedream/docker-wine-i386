@@ -1,11 +1,16 @@
 FROM icedream/debian-i386:jessie
 
 RUN apt-get update &&\
-	apt-get install -y wget wine32 &&\
-	wget https://github.com/Yelp/dumb-init/releases/download/v1.0.0/dumb-init_1.0.0_amd64.deb -O/tmp/dumb-init.deb &&\
-	dpkg -i /tmp/dumb-init.deb &&\
+	apt-get install -y wget tar wine32 build-essential &&\
+	wget https://github.com/Yelp/dumb-init/archive/master.tar.gz -O- |\
+		tar xz -C /tmp &&\
+	cd /tmp/dumb-init* &&\
+	make &&\
+	make install &&\
+	apt-get autoremove --purge -y tar wget build-essential &&\
 	apt-get clean &&\
 	adduser --disabled-password --uid 9999 --home /app --gecos "" app &&\
+	cd / &&\
 	rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 
 USER app
