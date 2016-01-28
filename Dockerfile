@@ -7,7 +7,7 @@ RUN apt-get update &&\
 	cd /tmp/dumb-init* &&\
 	make &&\
 	mv dumb-init /sbin/dumb-init &&\
-	apt-get autoremove --purge -y tar wget build-essential &&\
+	apt-get autoremove --purge -y wget build-essential &&\
 	apt-get clean &&\
 	adduser --disabled-password --uid 9999 --home /app --gecos "" app &&\
 	cd / &&\
